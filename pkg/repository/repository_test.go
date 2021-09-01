@@ -247,9 +247,11 @@ spec:
 					})
 
 					It("refreshes the cache entry", func() {
+						originalStampedObj := stampedObj.DeepCopy()
+
 						Expect(repo.CreateOrPatchUnstructuredObject(stampedObj)).To(Succeed())
 						Expect(cache.RefreshCallCount()).To(Equal(1))
-						Expect(cache.RefreshArgsForCall(0)).To(Equal(stampedObj))
+						Expect(cache.RefreshArgsForCall(0)).To(Equal(originalStampedObj))
 					})
 				})
 
