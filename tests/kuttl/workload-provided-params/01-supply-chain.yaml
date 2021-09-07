@@ -22,12 +22,8 @@ spec:
   components:
     - name: source-provider
       templateRef:
-        kind: ClusterSourceTemplate
-        name: git-template---workload-provided-params
+        kind: ClusterImageTemplate
+        name: image-template---workload-provided-params
       params:
         - name: number-of-cat-lives
-          value: $(workload.spec.params[2].value)$
-        - name: interesting-fact
-          value: "human head weighs 5 pounds"
-        - name: every-problem
-          value: $(workload.spec.params[?(@.name=="subject-of-problem")].value)$
+          default: 0

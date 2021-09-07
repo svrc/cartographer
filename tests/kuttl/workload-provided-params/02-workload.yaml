@@ -20,14 +20,8 @@ metadata:
     integration-test: "workload-provided-params"
 spec:
   params:
-    - name: waciuma-com/quality
-      value: beta
-    - name: waciuma-com/java-version
-      value: 11
     - name: number-of-cat-lives
       value: 1
-    - name: subject-of-problem
-      value: "screw"
 
   source:
     git:

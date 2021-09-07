@@ -13,25 +13,18 @@
 # limitations under the License.
 
 apiVersion: carto.run/v1alpha1
-kind: ClusterSourceTemplate
+kind: ClusterImageTemplate
 metadata:
-  name: git-template---workload-provided-params
+  name: image-template---workload-provided-params
 spec:
   params:
-    - name: broodx-cicadas-per-acre
-      default: 1400000
     - name: number-of-cat-lives
       default: 9
-    - name: every-problem
-      default: "nail"
-  urlPath: .value.cat-lives
-  revisionPath: .value.critters
+  imagePath: .value.cat-lives
   template:
     apiVersion: carto.run/v1alpha1
     kind: Deliverable
     metadata:
       name: test-deliverable-source
     value:
-      cat-lives: $(params[1].value)$
-      critters: $(params[0].value)$
-      every-problem: $(params[2].value)$
+      cat-lives: $(params[?(@.name=="number-of-cat-lives")].value)$

@@ -13,18 +13,29 @@
 # limitations under the License.
 
 apiVersion: carto.run/v1alpha1
-kind: ClusterImageTemplate
+kind: Deliverable
 metadata:
-  name: image-template---supply-chain-attempts-to-access-params-not-in-workload
-spec:
-  params:
-    - name: number-of-cat-lives
-      default: 9
-  imagePath: .value.cat-lives
-  template:
-    apiVersion: carto.run/v1alpha1
-    kind: Deliverable
-    metadata:
-      name: test-deliverable-source
-    value:
-      cat-lives: $(params[0].value)$
+  name: test-deliverable-source
+value:
+  cat-lives: 0
+
+---
+
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: petclinic
+status:
+  conditions:
+    - type: SupplyChainReady
+      status: "True"
+      reason: Ready
+    - type: ComponentsSubmitted
+      status: "True"
+      reason: ComponentSubmissionComplete
+    - type: Ready
+      status: "True"
+      reason: Ready
+  supplyChainRef:
+    name: responsible-ops---workload-does-not-provide-param
+    kind: ClusterSupplyChain

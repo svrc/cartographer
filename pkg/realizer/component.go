@@ -69,7 +69,7 @@ func (r *componentRealizer) Do(component *v1alpha1.SupplyChainComponent, supplyC
 		r.workload,
 		WorkloadTemplatingContext{
 			Workload: r.workload,
-			Params:   templates.ParamsBuilder(template.GetDefaultParams(), component.Params),
+			Params:   templates.ParamsBuilder(template.GetDefaultParams(), component.Params, r.workload.Spec.Params),
 			Sources:  inputs.Sources,
 			Images:   inputs.Images,
 			Configs:  inputs.Configs,

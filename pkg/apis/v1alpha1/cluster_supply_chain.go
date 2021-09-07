@@ -129,7 +129,7 @@ type SupplyChainSpec struct {
 
 type SupplyChainParam struct {
 	Name  string               `json:"name"`
-	Value apiextensionsv1.JSON `json:"value"`
+	Default apiextensionsv1.JSON `json:"default"`
 }
 
 type SupplyChainComponent struct {

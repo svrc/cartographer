@@ -15,15 +15,15 @@
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
-  name: responsible-ops---supply-chain-attempts-to-access-params-not-in-workload
+  name: responsible-ops---workload-does-not-provide-param
 spec:
   selector:
-    integration-test: "supply-chain-attempts-to-access-params-not-in-workload"
+    integration-test: "workload-does-not-provide-param"
   components:
     - name: source-provider
       templateRef:
         kind: ClusterImageTemplate
-        name: image-template---supply-chain-attempts-to-access-params-not-in-workload
+        name: image-template---workload-does-not-provide-param
       params:
         - name: number-of-cat-lives
-          value: $(workload.spec.params[0].value)$
+          default: 0

@@ -80,13 +80,13 @@ spec:
                     params:
                       items:
                         properties:
+                          default:
+                            x-kubernetes-preserve-unknown-fields: true
                           name:
                             type: string
-                          value:
-                            x-kubernetes-preserve-unknown-fields: true
                         required:
+                        - default
                         - name
-                        - value
                         type: object
                       type: array
                     sources:

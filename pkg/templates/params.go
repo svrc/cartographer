@@ -27,7 +27,7 @@ type Param struct {
 
 type Params []Param
 
-func ParamsBuilder(defaultParams v1alpha1.DefaultParams, componentParams []v1alpha1.SupplyChainParam) Params {
+func ParamsBuilder(defaultParams v1alpha1.DefaultParams, componentParams []v1alpha1.SupplyChainParam, workloadParams []v1alpha1.WorkloadParam) Params {
 	newParams := Params{}
 	for _, param := range defaultParams {
 		newParams = append(newParams, Param{
@@ -39,9 +39,18 @@ func ParamsBuilder(defaultParams v1alpha1.DefaultParams, componentParams []v1alp
 	for i, param := range newParams {
 		for _, override := range componentParams {
 			if param.Name == override.Name {
+				newParams[i].Value = override.Default
+			}
+		}
+	}
+
+	for i, param := range newParams {
+		for _, override := range workloadParams {
+			if param.Name == override.Name {
 				newParams[i].Value = override.Value
 			}
 		}
 	}
+
 	return newParams
 }

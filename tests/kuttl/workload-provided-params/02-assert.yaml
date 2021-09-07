@@ -12,14 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+---
+
+apiVersion: carto.run/v1alpha1
+kind: ClusterSupplyChain
+metadata:
+  name: responsible-ops---workload-provided-params
+status:
+  conditions:
+    - type: TemplatesReady
+      status: "True"
+    - type: Ready
+      status: "True"
+
+---
+
 apiVersion: carto.run/v1alpha1
 kind: Deliverable
 metadata:
   name: test-deliverable-source
 value:
   cat-lives: 1
-  critters: 1400000
-  every-problem: "screw"
 
 ---
 

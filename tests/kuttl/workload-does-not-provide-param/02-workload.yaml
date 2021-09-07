@@ -17,7 +17,7 @@ kind: Workload
 metadata:
   name: petclinic
   labels:
-    integration-test: "supply-chain-attempts-to-access-params-not-in-workload"
+    integration-test: "workload-does-not-provide-param"
 spec:
   source:
     git:
