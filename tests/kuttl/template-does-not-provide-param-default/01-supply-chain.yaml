@@ -16,20 +16,6 @@
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
-  name: supply-chain---template-broken-path
-spec:
-  selector:
-    integration-test: "broken-path"
-  components:
-    - name: source-provider
-      templateRef:
-        kind: ClusterSourceTemplate
-        name: git-template---template-broken-path
-
----
-apiVersion: carto.run/v1alpha1
-kind: ClusterSupplyChain
-metadata:
   name: supply-chain---template-broken-tag
 spec:
   selector:
@@ -37,6 +23,8 @@ spec:
   components:
     - name: source-provider
       templateRef:
-        kind: ClusterSourceTemplate
+        kind: ClusterImageTemplate
         name: git-template---template-broken-tag
-
+      params:
+        - name: some-param
+          value: $(workload.spec.params[0].value)$

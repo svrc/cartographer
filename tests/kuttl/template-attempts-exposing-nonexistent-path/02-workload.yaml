@@ -20,12 +20,3 @@ metadata:
   labels:
     integration-test: "broken-path"
 spec: {}
-
----
-apiVersion: carto.run/v1alpha1
-kind: Workload
-metadata:
-  name: petclinic-broken-tag
-  labels:
-    integration-test: "broken-tag"
-spec: {}

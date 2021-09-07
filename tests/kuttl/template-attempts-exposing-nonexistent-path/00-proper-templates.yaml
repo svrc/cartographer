@@ -28,20 +28,3 @@ spec:
     value:
       urlhere: "www.myurl.com"
       revisionhere: 55
-
----
-apiVersion: carto.run/v1alpha1
-kind: ClusterSourceTemplate
-metadata:
-  name: git-template---template-broken-tag
-spec:
-  urlPath: .value.urlhere
-  revisionPath: .value.revisionhere
-  template:
-    apiVersion: carto.run/v1alpha1
-    kind: Deliverable
-    metadata:
-      name: test-deliverable-source
-    value:
-      urlhere: $(undefined[1].value)$
-      revisionhere: $(params[0].value)$
