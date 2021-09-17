@@ -99,6 +99,34 @@ func registerWorkloadController(mgr manager.Manager) error {
 		return fmt.Errorf("watch: %w", err)
 	}
 
+	if err := ctrl.Watch(
+		&source.Kind{Type: &v1alpha1.ClusterSourceTemplate{}},
+		handler.EnqueueRequestsFromMapFunc(mapper.ApiTemplateToWorkloadRequests),
+	); err != nil {
+		return fmt.Errorf("watch: %w", err)
+	}
+
+	if err := ctrl.Watch(
+		&source.Kind{Type: &v1alpha1.ClusterImageTemplate{}},
+		handler.EnqueueRequestsFromMapFunc(mapper.ApiTemplateToWorkloadRequests),
+	); err != nil {
+		return fmt.Errorf("watch: %w", err)
+	}
+
+	if err := ctrl.Watch(
+		&source.Kind{Type: &v1alpha1.ClusterConfigTemplate{}},
+		handler.EnqueueRequestsFromMapFunc(mapper.ApiTemplateToWorkloadRequests),
+	); err != nil {
+		return fmt.Errorf("watch: %w", err)
+	}
+
+	if err := ctrl.Watch(
+		&source.Kind{Type: &v1alpha1.ClusterTemplate{}},
+		handler.EnqueueRequestsFromMapFunc(mapper.ApiTemplateToWorkloadRequests),
+	); err != nil {
+		return fmt.Errorf("watch: %w", err)
+	}
+
 	return nil
 }
 

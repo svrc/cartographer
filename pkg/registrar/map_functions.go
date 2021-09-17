@@ -100,6 +100,47 @@ func (mapper *Mapper) RunTemplateToPipelineRequests(object client.Object) []reco
 	return requests
 }
 
+func (mapper *Mapper) ApiTemplateToWorkloadRequests(object client.Object) []reconcile.Request {
+	var (
+		templateKind, templateName string
+	)
+
+	switch template := object.(type) {
+	case *v1alpha1.ClusterTemplate, *v1alpha1.ClusterSourceTemplate, *v1alpha1.ClusterImageTemplate, *v1alpha1.ClusterConfigTemplate:
+		templateKind = template.GetObjectKind().GroupVersionKind().Kind
+		templateName = template.GetName()
+	default:
+		mapper.Logger.Error(nil, "cluster template to pipeline requests: cast to cluster template failed")
+		return nil
+	}
+
+	scList := &v1alpha1.ClusterSupplyChainList{}
+
+	err := mapper.Client.List(context.TODO(), scList)
+	if err != nil {
+		mapper.Logger.Error(fmt.Errorf("client list: %w", err), "cluster template to pipeline requests: client list")
+		return nil
+	}
+
+	var requests []reconcile.Request
+	for _, supplyChain := range scList.Items {
+		if supplyChainRefersToTemplate(supplyChain, templateKind, templateName) {
+			requests = append(requests, mapper.ClusterSupplyChainToWorkloadRequests(&supplyChain)...)
+		}
+	}
+	return requests
+}
+
+func supplyChainRefersToTemplate(supplyChain v1alpha1.ClusterSupplyChain, templateKind, templateName string) bool {
+	for _, component := range supplyChain.Spec.Components {
+		if component.TemplateRef.Kind == templateKind && component.TemplateRef.Name == templateName{
+			return true
+		}
+	}
+
+	return false
+}
+
 func runTemplateRefMatch(ref v1alpha1.TemplateReference, pipelineNamespace string, runTemplate *v1alpha1.RunTemplate) bool {
 	if ref.Name != runTemplate.Name {
 		return false
