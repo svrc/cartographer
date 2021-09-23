@@ -33,15 +33,15 @@ update_or_create_docker_config() {
         local token=$2
         local config_file=$3
 
-        readonly qry='.auths["%s"] = {"auth": "%s"}'
-
         local current_content=$(jq '.' $config_file)
         if [[ "$current_content" == "" ]]; then
                 echo '{}' >$config_file
         fi
 
-        config=$(jq "$(printf "$qry" $server $token)" < "$config_file")
-        echo "$config" > $config_file
+        local existing="$(cat $config_file)"
+        echo "$existing" | \
+        jq --arg server "$server" --arg token "$token" '.auths[$server] = {"auth": $token}' \
+        > $config_file
 }
 
 basic_auth() {
