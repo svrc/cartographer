@@ -83,7 +83,7 @@ var _ = Describe("Stamping a resource on Pipeline Creation", func() {
 						matchExpressions:
 						- operator : In
 						  scopeName: PriorityClass
-						  values: [$(pipeline.spec.inputs.key)$]
+						  values: $(pipeline.spec.inputs.params[?(@.name=="source-url")].value)$
 				`,
 				testNS, testNS,
 			)
@@ -115,7 +115,9 @@ var _ = Describe("Stamping a resource on Pipeline Creation", func() {
 					    namespace: %s
 					    kind: RunTemplate
 					  inputs:
-					    key: val
+						params:
+						  - name: source-url
+							value: asdf
 					`,
 					testNS, testNS)
 
@@ -132,7 +134,7 @@ var _ = Describe("Stamping a resource on Pipeline Creation", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})
 
-			It("stamps the templated object once", func() {
+			FIt("stamps the templated object once", func() {
 				resourceList := &v1.ResourceQuotaList{}
 
 				Eventually(func() (int, error) {
