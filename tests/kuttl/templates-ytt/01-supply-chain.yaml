@@ -21,16 +21,6 @@ spec:
   selector:
     integration-test: "templates-consume-output-of-components"
   components:
-    - name: source-provider-first
-      templateRef:
-        kind: ClusterSourceTemplate
-        name: example-first---consume-output-of-components
-
-    - name: source-provider-second
-      templateRef:
-        kind: ClusterSourceTemplate
-        name: example-second---consume-output-of-components
-
     - name: built-image-provider
       templateRef:
         kind: ClusterImageTemplate
@@ -38,19 +28,6 @@ spec:
       sources:
         - component: source-provider-second
           name: solo-source-provider
-
-    - name: config
-      templateRef:
-        kind: ClusterConfigTemplate
-        name: example-config---consume-output-of-components
-      images:
-        - component: built-image-provider
-          name: solo-image-provider
-
-    - name: config
-      templateRef:
-        kind: ClusterTemplate
-        name: example-config---consume-output-of-components
-      configs:
-        - component: config
-          name: solo-config-provider
+      params:
+        - name: foo
+          value: $(workload.spec.params[0].value)$

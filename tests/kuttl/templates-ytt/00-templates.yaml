@@ -14,44 +14,13 @@
 
 ---
 apiVersion: carto.run/v1alpha1
-kind: ClusterSourceTemplate
-metadata:
-  name: example-first---consume-output-of-components
-spec:
-  ytt: |
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: example-first-configmap
-    data:
-      player_initial_lives: "three"
-      player_loves: "gaming"
-  urlPath: data.player_initial_lives
-  revisionPath: data.player_loves
-
----
-apiVersion: carto.run/v1alpha1
-kind: ClusterSourceTemplate
-metadata:
-  name: example-second---consume-output-of-components
-spec:
-  ytt: |
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: example-second-configmap
-    data:
-      player_initial_lives: "5"
-      player_loves: "knitting"
-  urlPath: data.player_initial_lives
-  revisionPath: data.player_loves
-
----
-apiVersion: carto.run/v1alpha1
 kind: ClusterImageTemplate
 metadata:
   name: example-image---consume-output-of-components
 spec:
+  params:
+    - name: foo
+      default: "100"
   ytt: |
     #@ load("@ytt:data", "data")
 
@@ -60,39 +29,5 @@ spec:
     metadata:
       name: example-image-configmap
     data:
-      player_current_lives: #@ data.values.source.url
-      some_other_info: #@ data.values.sources['solo-source-provider'].revision
+      fizz: #@ data.values.params.foo
   imagePath: data.some_other_info
-
----
-apiVersion: carto.run/v1alpha1
-kind: ClusterConfigTemplate
-metadata:
-  name: example-config---consume-output-of-components
-spec:
-  ytt: |
-    #@ load("@ytt:data", "data")
-
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: example-config-configmap
-    data:
-      favorite_color: #@ data.values.image.image
-  configPath: data.favorite_color
-
----
-apiVersion: carto.run/v1alpha1
-kind: ClusterTemplate
-metadata:
-  name: example-config---consume-output-of-components
-spec:
-  ytt: |
-    #@ load("@ytt:data", "data")
-
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: example-config
-    data:
-      best_name: #@ data.values.config.config
